@@ -20,19 +20,19 @@ class DataTransformation:
     def __init__(self):
         self.data_transformation_config = DataTransformationConfig()
 
-    def get_data_transfromer_object (self):
+    def get_data_transformer_object(self):
 
         '''
         This function is responsible for data transfromation
         '''
         try:
-            numerical_columns = ['writing_score','reading_score']
+            numerical_columns = ['writing score','reading score']
             categorical_columns =[
                 "gender",
                 "parent_education",
-                "race_ethnicity",
+                "race/ethnicity",
                 "lunch",
-                "test_preparation_course"
+                "test preparation course"
             ]
 
             #create the numeric pipeline
@@ -76,10 +76,10 @@ class DataTransformation:
 
             logging.info("obtaining preprocessing object")
 
-            preprocessing_obj =self.get_data_transfromer_object()
+            preprocessing_obj = self.get_data_transformer_object()
             
-            target_column_name ="math_score"
-            numerical_columns = ['writing_score','reading_score']
+            target_column_name ="math score"
+            numerical_columns = ['writing score','reading score']
 
             input_feature_train_df = train_df.drop(columns=[target_column_name],axis=1)
             target_feature_train_df = train_df[target_column_name]
