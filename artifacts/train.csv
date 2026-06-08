@@ -1,4 +1,4 @@
-student_id,age,gender,school_type,parent_education,study_hours,attendance_percentage,internet_access,travel_time,extra_activities,study_method,science_score,english_score,overall_score,final_grade,race/ethnicity,lunch,test preparation course,math score,reading score,writing score
+student_id,age,gender,school_type,parent_education,study_hours,attendance_percentage,internet_access,travel_time,extra_activities,study_method,science_score,english_score,overall_score,final_grade,race_ethnicity,lunch,test_preparation_course,math_score,reading_score,writing_score
 30,16,other,public,diploma,7.0,74.9,yes,>60 min,yes,textbook,73.5,71.7,82.6,c,group D,standard,none,62,70,75
 536,14,female,public,phd,1.1,87.3,yes,<15 min,no,mixed,49.8,44.7,42.8,e,group C,free/reduced,completed,66,83,83
 696,15,male,public,post graduate,1.9,90.5,yes,>60 min,yes,textbook,40.6,69.9,53.3,e,group D,free/reduced,none,79,89,86
