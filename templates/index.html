@@ -1,5 +1,39 @@
-<h1>Welcome to the Home Page</h1>
+<!DOCTYPE html>
 
-<a href="{{ url_for('predict_datapoint') }}">
-    Predict Student Score
-</a>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Student Performance Predictor</title>
+
+<script src="https://cdn.tailwindcss.com"></script>
+
+
+</head>
+<body class="bg-gradient-to-r from-blue-500 to-indigo-600 min-h-screen flex items-center justify-center">
+
+
+<div class="bg-white shadow-2xl rounded-2xl p-10 max-w-lg text-center">
+
+    <h1 class="text-4xl font-bold text-gray-800 mb-4">
+        🎓 Student Performance Predictor
+    </h1>
+
+    <p class="text-gray-600 mb-8">
+        Predict a student's Mathematics score using Machine Learning based on academic and demographic information.
+    </p>
+
+    <a href="{{ url_for('predict_datapoint') }}"
+       class="inline-block bg-blue-600 text-white px-8 py-3 rounded-lg font-semibold shadow-lg hover:bg-blue-700 transition duration-300">
+        Predict Student Score
+    </a>
+
+    <div class="mt-8 text-sm text-gray-500">
+        Built with Flask, Scikit-Learn, Docker & AWS
+    </div>
+
+</div>
+
+
+</body>
+</html>
