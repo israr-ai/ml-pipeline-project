@@ -89,7 +89,7 @@ mlproject/
 │   ├── index.html
 │   └── home.html
 │
-├── app.py
+├── application.py
 ├── Dockerfile
 ├── requirements.txt
 ├── setup.py
