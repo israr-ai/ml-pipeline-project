@@ -21,8 +21,12 @@ class User(UserMixin, db.Model):
     password_hash = db.Column(db.String(255), nullable=False)
     role = db.Column(db.Enum(UserRole), default=UserRole.USER, nullable=False)
     created_at = db.Column(db.DateTime, default=lambda: datetime.now(timezone.utc))
+    reset_token = db.Column(db.String(64), unique=True, nullable=True)
+    reset_token_expires_at = db.Column(db.DateTime, nullable=True)
 
-    predictions = db.relationship("Prediction", backref="user", lazy=True)
+    predictions = db.relationship(
+        "Prediction", backref="user", lazy=True, cascade="all, delete-orphan"
+    )
 
 
 class Prediction(db.Model):

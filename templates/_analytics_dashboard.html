@@ -1,0 +1,45 @@
+<div class="grid sm:grid-cols-3 gap-6">
+    <div class="bg-white dark:bg-gray-800 shadow-2xl rounded-2xl p-6 text-center">
+        <p class="text-sm text-gray-500 dark:text-gray-400">Total predictions</p>
+        <p class="text-4xl font-semibold text-gray-800 dark:text-white mt-2">{{ dashboard_data.total_predictions }}</p>
+    </div>
+    <div class="bg-white dark:bg-gray-800 shadow-2xl rounded-2xl p-6 text-center">
+        <p class="text-sm text-gray-500 dark:text-gray-400">Average score</p>
+        <p class="text-4xl font-semibold text-gray-800 dark:text-white mt-2">{{ dashboard_data.average_score }}</p>
+    </div>
+    <div class="bg-white dark:bg-gray-800 shadow-2xl rounded-2xl p-6 text-center">
+        <p class="text-sm text-gray-500 dark:text-gray-400">Highest score</p>
+        <p class="text-4xl font-semibold text-gray-800 dark:text-white mt-2">{{ dashboard_data.highest_score }}</p>
+    </div>
+</div>
+
+{% if dashboard_data.total_predictions > 0 %}
+    <div class="grid md:grid-cols-2 gap-6">
+        <div class="bg-white dark:bg-gray-800 shadow-2xl rounded-2xl p-6">
+            <h2 class="text-base font-semibold text-gray-700 dark:text-gray-200 mb-4">Average predicted score by gender</h2>
+            <canvas id="genderChart"></canvas>
+        </div>
+        <div class="bg-white dark:bg-gray-800 shadow-2xl rounded-2xl p-6">
+            <h2 class="text-base font-semibold text-gray-700 dark:text-gray-200 mb-4">Average predicted score by parental education</h2>
+            <canvas id="parentalEducationChart"></canvas>
+        </div>
+        <div class="bg-white dark:bg-gray-800 shadow-2xl rounded-2xl p-6">
+            <h2 class="text-base font-semibold text-gray-700 dark:text-gray-200 mb-4">Predictions by lunch type</h2>
+            <canvas id="lunchChart"></canvas>
+        </div>
+        <div class="bg-white dark:bg-gray-800 shadow-2xl rounded-2xl p-6">
+            <h2 class="text-base font-semibold text-gray-700 dark:text-gray-200 mb-4">Average predicted score by test preparation</h2>
+            <canvas id="testPrepChart"></canvas>
+        </div>
+    </div>
+{% else %}
+    <div class="bg-white dark:bg-gray-800 shadow-2xl rounded-2xl p-8 text-center">
+        <p class="text-gray-500 dark:text-gray-400">{{ empty_message | default("No predictions yet.") }}</p>
+        {% if empty_cta_url %}
+            <a href="{{ empty_cta_url }}" class="text-indigo-600 dark:text-indigo-400 hover:underline mt-2 inline-block">{{ empty_cta_label | default("Make a prediction") }}</a>
+        {% endif %}
+    </div>
+{% endif %}
+
+<script type="application/json" id="dashboard-data">{{ dashboard_data | tojson }}</script>
+<script src="{{ url_for('static', filename='js/dashboard.js') }}"></script>

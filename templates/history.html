@@ -1,18 +1,58 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>History - Student Performance Predictor</title>
+{% extends "base.html" %}
 
-    <script src="https://cdn.tailwindcss.com"></script>
-</head>
-<body class="bg-gradient-to-r from-indigo-500 via-purple-500 to-pink-500 min-h-screen flex items-center justify-center p-6 pt-20">
-    {% include '_nav.html' %}
+{% block title %}History - Student Performance Predictor{% endblock %}
 
-    <div class="bg-white shadow-2xl rounded-2xl w-full max-w-4xl p-8 text-center">
-        <h1 class="text-3xl font-bold text-gray-800 mb-4">Prediction History</h1>
-        <p class="text-gray-500">{{ current_user.name }}'s past predictions will be listed here.</p>
-    </div>
-</body>
-</html>
+{% block content %}
+<div class="max-w-4xl mx-auto bg-white dark:bg-gray-800 shadow-2xl rounded-2xl p-8">
+    <h1 class="text-3xl font-bold text-gray-800 dark:text-white mb-6 text-center">Prediction History</h1>
+
+    {% if pagination.items %}
+        <div class="overflow-x-auto">
+            <table class="w-full text-left text-sm">
+                <thead>
+
+                    <tr class="border-b border-gray-200 dark:border-gray-700 text-gray-500 dark:text-gray-400 uppercase text-xs">
+                        <th class="py-3 px-2">Date</th>
+                        <th class="py-3 px-2">Gender</th>
+                        <th class="py-3 px-2">Test Prep</th>
+                        <th class="py-3 px-2">Reading Score</th>
+                        <th class="py-3 px-2">Writing Score</th>
+                        <th class="py-3 px-2">Predicted Math Score</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for prediction in pagination.items %}
+                        <tr class="border-b border-gray-100 dark:border-gray-700">
+                            <td class="py-3 px-2 text-gray-700 dark:text-gray-300 whitespace-nowrap">{{ prediction.created_at.strftime('%Y-%m-%d %H:%M') }}</td>
+                            <td class="py-3 px-2 text-gray-700 dark:text-gray-300 capitalize">{{ prediction.gender }}</td>
+                            <td class="py-3 px-2 text-gray-700 dark:text-gray-300 capitalize">{{ prediction.test_preparation_course }}</td>
+                            <td class="py-3 px-2 text-gray-700 dark:text-gray-300">{{ prediction.reading_score }}</td>
+                            <td class="py-3 px-2 text-gray-700 dark:text-gray-300">{{ prediction.writing_score }}</td>
+                            <td class="py-3 px-2 font-semibold text-indigo-600 dark:text-indigo-400">{{ "%.2f"|format(prediction.predicted_math_score) }}</td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+
+        <div class="flex items-center justify-between mt-6 text-sm text-gray-600 dark:text-gray-400">
+            <div class="w-24">
+                {% if pagination.has_prev %}
+                    <a href="{{ url_for('history', page=pagination.prev_num) }}" class="text-indigo-600 dark:text-indigo-400 hover:underline">&larr; Previous</a>
+                {% endif %}
+            </div>
+            <div>Page {{ pagination.page }} of {{ pagination.pages }}</div>
+            <div class="w-24 text-right">
+                {% if pagination.has_next %}
+                    <a href="{{ url_for('history', page=pagination.next_num) }}" class="text-indigo-600 dark:text-indigo-400 hover:underline">Next &rarr;</a>
+                {% endif %}
+            </div>
+        </div>
+    {% else %}
+        <p class="text-gray-500 dark:text-gray-400 text-center">You haven't made any predictions yet.</p>
+        <p class="text-center mt-4">
+            <a href="{{ url_for('predict_datapoint') }}" class="text-indigo-600 dark:text-indigo-400 hover:underline">Make your first prediction</a>
+        </p>
+    {% endif %}
+</div>
+{% endblock %}

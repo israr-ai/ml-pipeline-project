@@ -1,18 +1,20 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Dashboard - Student Performance Predictor</title>
+{% extends "base.html" %}
 
-    <script src="https://cdn.tailwindcss.com"></script>
-</head>
-<body class="bg-gradient-to-r from-indigo-500 via-purple-500 to-pink-500 min-h-screen flex items-center justify-center p-6 pt-20">
-    {% include '_nav.html' %}
+{% block title %}Dashboard - Student Performance Predictor{% endblock %}
 
-    <div class="bg-white shadow-2xl rounded-2xl w-full max-w-4xl p-8 text-center">
-        <h1 class="text-3xl font-bold text-gray-800 mb-4">Welcome, {{ current_user.name }}</h1>
-        <p class="text-gray-500">Your analytics dashboard will live here.</p>
+{% block head %}
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4"></script>
+{% endblock %}
+
+{% block content %}
+<div class="max-w-5xl mx-auto space-y-6">
+    <div class="bg-white dark:bg-gray-800 shadow-2xl rounded-2xl p-8 text-center">
+        <h1 class="text-3xl font-bold text-gray-800 dark:text-white">Your Analytics Dashboard</h1>
+        <p class="text-gray-500 dark:text-gray-400 mt-2">Welcome, {{ current_user.name }}</p>
     </div>
-</body>
-</html>
+
+    {% set empty_message = "No predictions yet — make one to see your analytics." %}
+    {% set empty_cta_url = url_for('predict_datapoint') %}
+    {% include '_analytics_dashboard.html' %}
+</div>
+{% endblock %}

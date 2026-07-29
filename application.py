@@ -10,6 +10,8 @@ from flask_login import LoginManager, current_user, login_required
 from src.pipeline.predict_pipeline import CustomData,PredictPipeline
 from src.models_db import db, User, Prediction
 from src.auth.routes import auth_bp
+from src.admin.routes import admin_bp
+from src.analytics.aggregations import build_dashboard_data
 
 application = Flask(__name__)
 
@@ -30,6 +32,7 @@ def load_user(user_id):
 
 
 application.register_blueprint(auth_bp)
+application.register_blueprint(admin_bp)
 
 app= application
 
@@ -43,12 +46,20 @@ def index():
 @app.route('/dashboard')
 @login_required
 def dashboard():
-    return render_template('dashboard.html')
+    predictions = Prediction.query.filter_by(user_id=current_user.id).all()
+    dashboard_data = build_dashboard_data(predictions)
+    return render_template('dashboard.html', dashboard_data=dashboard_data)
 
 @app.route('/history')
 @login_required
 def history():
-    return render_template('history.html')
+    page = request.args.get('page', 1, type=int)
+    pagination = (
+        Prediction.query.filter_by(user_id=current_user.id)
+        .order_by(Prediction.created_at.desc())
+        .paginate(page=page, per_page=10, error_out=False)
+    )
+    return render_template('history.html', pagination=pagination)
 
 @app.route('/predictdata',methods=['GET','POST'])
 def predict_datapoint():

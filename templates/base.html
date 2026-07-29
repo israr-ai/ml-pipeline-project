@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}Student Performance Predictor{% endblock %}</title>
+
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = { darkMode: 'class' };
+    </script>
+    <script>
+        (function () {
+            var stored = localStorage.getItem('theme');
+            var prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+            if (stored === 'dark' || (!stored && prefersDark)) {
+                document.documentElement.classList.add('dark');
+            }
+        })();
+    </script>
+    {% block head %}{% endblock %}
+</head>
+<body class="bg-gray-50 dark:bg-gray-900 min-h-screen">
+
+    <nav class="fixed top-0 inset-x-0 h-14 z-20 bg-white dark:bg-gray-800 border-b border-gray-200 dark:border-gray-700">
+        <div class="h-full flex items-center justify-between px-4">
+            <a href="{{ url_for('index') }}" class="flex items-center gap-2 font-semibold text-gray-800 dark:text-white">
+                <span class="text-xl">🎓</span>
+                <span class="hidden sm:inline">Student Performance Predictor</span>
+            </a>
+            <div class="flex items-center gap-4 text-sm font-medium text-gray-600 dark:text-gray-300">
+                {% if current_user.is_authenticated %}
+                    <span class="hidden sm:inline">Hi, {{ current_user.name }}</span>
+                {% endif %}
+                <button id="theme-toggle" type="button"
+                    class="w-9 h-9 flex items-center justify-center text-gray-600 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700"
+                    aria-label="Toggle dark mode">
+                    <span id="theme-toggle-icon"></span>
+                </button>
+                {% if current_user.is_authenticated %}
+                    <a href="{{ url_for('auth.logout') }}" class="hover:underline">Logout</a>
+                {% else %}
+                    <a href="{{ url_for('auth.login') }}" class="hover:underline">Login</a>
+                    <a href="{{ url_for('auth.signup') }}" class="hover:underline">Signup</a>
+                {% endif %}
+            </div>
+        </div>
+    </nav>
+
+    <aside class="hidden md:block fixed top-14 bottom-0 left-0 w-56 bg-white dark:bg-gray-800 border-r border-gray-200 dark:border-gray-700 overflow-y-auto">
+        <div class="p-4 space-y-1 text-sm font-medium text-gray-600 dark:text-gray-300">
+            <a href="{{ url_for('index') }}" class="block px-3 py-2 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700">Home</a>
+            <a href="{{ url_for('predict_datapoint') }}" class="block px-3 py-2 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700">Predict</a>
+            <a href="{{ url_for('history') }}" class="block px-3 py-2 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700">History</a>
+            <a href="{{ url_for('dashboard') }}" class="block px-3 py-2 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700">Dashboard</a>
+            {% if current_user.is_authenticated and current_user.role.value == 'admin' %}
+                <a href="{{ url_for('admin.dashboard') }}" class="block px-3 py-2 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700">Admin</a>
+                <a href="{{ url_for('admin.dashboard') }}#registered-users" class="block px-3 py-2 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700">Registered Users</a>
+            {% endif %}
+        </div>
+    </aside>
+
+    <main class="pt-14 md:pl-56 min-h-screen">
+        <div class="p-6">
+            {% block content %}{% endblock %}
+        </div>
+    </main>
+
+    <script>
+        var toggleBtn = document.getElementById('theme-toggle');
+        var icon = document.getElementById('theme-toggle-icon');
+
+        var SUN_ICON = '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="w-5 h-5"><circle cx="12" cy="12" r="4"></circle><path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M6.34 17.66l-1.41 1.41M19.07 4.93l-1.41 1.41"></path></svg>';
+        var MOON_ICON = '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="w-5 h-5"><path d="M21 12.79A9 9 0 1111.21 3 7 7 0 0021 12.79z"></path></svg>';
+
+        function syncThemeIcon() {
+            icon.innerHTML = document.documentElement.classList.contains('dark') ? SUN_ICON : MOON_ICON;
+        }
+        syncThemeIcon();
+
+        toggleBtn.addEventListener('click', function () {
+            document.documentElement.classList.toggle('dark');
+            localStorage.setItem('theme', document.documentElement.classList.contains('dark') ? 'dark' : 'light');
+            syncThemeIcon();
+            window.dispatchEvent(new Event('themechange'));
+        });
+    </script>
+    {% block scripts %}{% endblock %}
+</body>
+</html>

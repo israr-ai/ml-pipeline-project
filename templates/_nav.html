@@ -1,10 +1,17 @@
-<nav class="fixed top-0 inset-x-0 z-10">
+<nav class="fixed top-0 inset-x-0 z-10 bg-black/20 backdrop-blur-sm shadow-md">
     <div class="max-w-4xl mx-auto flex items-center justify-between py-3 px-6 text-white text-sm font-medium">
         <a href="{{ url_for('index') }}" class="text-base font-semibold">🎓 Student Performance Predictor</a>
         <div class="flex items-center gap-4">
+            <a href="{{ url_for('index') }}" class="hover:underline">Home</a>
+            <a href="{{ url_for('predict_datapoint') }}" class="hover:underline">Predict</a>
             {% if current_user.is_authenticated %}
-                <a href="{{ url_for('dashboard') }}" class="hover:underline">Dashboard</a>
                 <a href="{{ url_for('history') }}" class="hover:underline">History</a>
+                <a href="{{ url_for('dashboard') }}" class="hover:underline">Dashboard</a>
+                {% if current_user.role.value == 'admin' %}
+                    <a href="{{ url_for('admin.dashboard') }}" class="hover:underline">Admin</a>
+                {% endif %}
+            {% endif %}
+            {% if current_user.is_authenticated %}
                 <span>Hi, {{ current_user.name }}</span>
                 <a href="{{ url_for('auth.logout') }}" class="hover:underline">Logout</a>
             {% else %}

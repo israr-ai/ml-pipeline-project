@@ -1,0 +1,57 @@
+{% extends "base.html" %}
+
+{% block title %}Admin - Student Performance Predictor{% endblock %}
+
+{% block head %}
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4"></script>
+{% endblock %}
+
+{% block content %}
+<div class="max-w-5xl mx-auto space-y-6">
+    <div class="bg-white dark:bg-gray-800 shadow-2xl rounded-2xl p-8 text-center">
+        <h1 class="text-3xl font-bold text-gray-800 dark:text-white">Admin Dashboard</h1>
+        <p class="text-gray-500 dark:text-gray-400 mt-2">System-wide analytics across all users</p>
+    </div>
+
+    {% set empty_message = "No predictions have been made by any user yet." %}
+    {% include '_analytics_dashboard.html' %}
+
+    <div id="registered-users" class="bg-white dark:bg-gray-800 shadow-2xl rounded-2xl p-8 scroll-mt-20">
+        <h2 class="text-xl font-bold text-gray-800 dark:text-white mb-4">Registered Users</h2>
+        <div class="overflow-x-auto">
+            <table class="w-full text-left text-sm">
+                <thead>
+                    <tr class="border-b border-gray-200 dark:border-gray-700 text-gray-500 dark:text-gray-400 uppercase text-xs">
+                        <th class="py-3 px-2">Name</th>
+                        <th class="py-3 px-2">Email</th>
+                        <th class="py-3 px-2">Role</th>
+                        <th class="py-3 px-2">Joined</th>
+                        <th class="py-3 px-2"></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for user in users %}
+                        <tr class="border-b border-gray-100 dark:border-gray-700">
+                            <td class="py-3 px-2 text-gray-700 dark:text-gray-300">{{ user.name }}</td>
+                            <td class="py-3 px-2 text-gray-700 dark:text-gray-300">{{ user.email }}</td>
+                            <td class="py-3 px-2 text-gray-700 dark:text-gray-300 capitalize">{{ user.role.value }}</td>
+                            <td class="py-3 px-2 text-gray-700 dark:text-gray-300 whitespace-nowrap">{{ user.created_at.strftime('%Y-%m-%d') }}</td>
+                            <td class="py-3 px-2 text-right">
+                                {% if user.id != current_user.id %}
+                                    <form method="POST" action="{{ url_for('admin.delete_user', user_id=user.id) }}"
+                                          onsubmit="return confirm('Delete {{ user.name }}? This also deletes their prediction history.');">
+                                        <input type="hidden" name="csrf_token" value="{{ csrf_token }}">
+                                        <button type="submit" class="text-red-600 dark:text-red-400 hover:underline">Delete</button>
+                                    </form>
+                                {% else %}
+                                    <span class="text-gray-400 dark:text-gray-500">You</span>
+                                {% endif %}
+                            </td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+{% endblock %}
