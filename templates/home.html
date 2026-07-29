@@ -7,7 +7,8 @@
 
     <script src="https://cdn.tailwindcss.com"></script>
 </head>
-<body class="bg-gradient-to-r from-indigo-500 via-purple-500 to-pink-500 min-h-screen flex items-center justify-center p-6">
+<body class="bg-gradient-to-r from-indigo-500 via-purple-500 to-pink-500 min-h-screen flex items-center justify-center p-6 pt-20">
+    {% include '_nav.html' %}
 
     <div class="bg-white shadow-2xl rounded-2xl w-full max-w-4xl p-8">
 
@@ -148,6 +149,17 @@
                     {{ results }}
                 </p>
             </div>
+
+            {% if saved_to_history %}
+                <p class="text-gray-500 text-sm mt-3">
+                    Saved to your <a href="{{ url_for('history') }}" class="text-indigo-600 hover:underline">history</a>.
+                </p>
+            {% else %}
+                <p class="text-gray-500 text-sm mt-3">
+                    <a href="{{ url_for('auth.login', next=url_for('predict_datapoint')) }}" class="text-indigo-600 hover:underline">Log in</a>
+                    to save this prediction to your history.
+                </p>
+            {% endif %}
         </div>
         {% endif %}
 

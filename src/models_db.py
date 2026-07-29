@@ -1,0 +1,41 @@
+import enum
+from datetime import datetime, timezone
+
+from flask_login import UserMixin
+from flask_sqlalchemy import SQLAlchemy
+
+db = SQLAlchemy()
+
+
+class UserRole(enum.Enum):
+    USER = "user"
+    ADMIN = "admin"
+
+
+class User(UserMixin, db.Model):
+    __tablename__ = "users"
+
+    id = db.Column(db.Integer, primary_key=True)
+    name = db.Column(db.String(120), nullable=False)
+    email = db.Column(db.String(255), unique=True, nullable=False)
+    password_hash = db.Column(db.String(255), nullable=False)
+    role = db.Column(db.Enum(UserRole), default=UserRole.USER, nullable=False)
+    created_at = db.Column(db.DateTime, default=lambda: datetime.now(timezone.utc))
+
+    predictions = db.relationship("Prediction", backref="user", lazy=True)
+
+
+class Prediction(db.Model):
+    __tablename__ = "predictions"
+
+    id = db.Column(db.Integer, primary_key=True)
+    user_id = db.Column(db.Integer, db.ForeignKey("users.id"), nullable=False)
+    gender = db.Column(db.String(20), nullable=False)
+    race_ethnicity = db.Column(db.String(20), nullable=False)
+    parental_education = db.Column(db.String(50), nullable=False)
+    lunch = db.Column(db.String(20), nullable=False)
+    test_preparation_course = db.Column(db.String(20), nullable=False)
+    reading_score = db.Column(db.Float, nullable=False)
+    writing_score = db.Column(db.Float, nullable=False)
+    predicted_math_score = db.Column(db.Float, nullable=False)
+    created_at = db.Column(db.DateTime, default=lambda: datetime.now(timezone.utc))
