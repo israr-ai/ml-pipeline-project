@@ -1,0 +1,7 @@
+# Extra dependencies for local model (re)training / notebook EDA.
+# Serving deps (Flask, sklearn, pandas, etc.) live in requirements.txt — install that first:
+#   pip install -r requirements.txt -r requirements-train.txt
+-r requirements.txt
+catboost
+xgboost
+jupyter

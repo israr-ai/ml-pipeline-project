@@ -187,6 +187,16 @@ conda activate venv
 pip install -r requirements.txt
 ```
 
+To retrain the model locally (data ingestion → transformation → training notebooks/scripts), also
+install the training-only extras (CatBoost, XGBoost, Jupyter):
+
+```bash
+pip install -r requirements.txt -r requirements-train.txt
+```
+
+`requirements.txt` alone is what's used for serving/deployment (Docker, Render) — it stays free of
+these heavier training-only packages.
+
 ---
 
 ## Run Application Locally
