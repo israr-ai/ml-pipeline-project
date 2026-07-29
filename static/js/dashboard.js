@@ -37,7 +37,7 @@ function destroyActiveCharts() {
 // status) doesn't change meaning, so every bar in a chart takes the same
 // slot-1 hue rather than one color per bar - identity is already carried by
 // the axis label, not color.
-function renderBarChart(canvasId, dataObj, palette) {
+function renderBarChart(canvasId, dataObj, palette, { max, stepSize } = {}) {
     const canvas = document.getElementById(canvasId);
     if (!canvas || Object.keys(dataObj).length === 0) {
         return;
@@ -66,8 +66,9 @@ function renderBarChart(canvasId, dataObj, palette) {
                     },
                     y: {
                         beginAtZero: true,
+                        max,
                         grid: { color: palette.grid },
-                        ticks: { color: palette.muted },
+                        ticks: { color: palette.muted, stepSize },
                     },
                 },
             },
@@ -117,10 +118,11 @@ function renderAllCharts(data) {
     Chart.defaults.font.family = "system-ui, -apple-system, 'Segoe UI', sans-serif";
     Chart.defaults.color = palette.secondary;
 
-    renderBarChart("genderChart", data.avg_by_gender, palette);
-    renderBarChart("parentalEducationChart", data.avg_by_parental_education, palette);
+    const scoreAxis = { max: 100, stepSize: 20 };
+    renderBarChart("genderChart", data.avg_by_gender, palette, scoreAxis);
+    renderBarChart("parentalEducationChart", data.avg_by_parental_education, palette, scoreAxis);
     renderPieChart("lunchChart", data.count_by_lunch, palette);
-    renderBarChart("testPrepChart", data.avg_by_test_prep, palette);
+    renderBarChart("testPrepChart", data.avg_by_test_prep, palette, scoreAxis);
 }
 
 document.addEventListener("DOMContentLoaded", () => {

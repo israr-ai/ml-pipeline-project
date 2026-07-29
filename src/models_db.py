@@ -1,10 +1,18 @@
 import enum
+import os
 from datetime import datetime, timezone
 
 from flask_login import UserMixin
 from flask_sqlalchemy import SQLAlchemy
 
 db = SQLAlchemy()
+
+
+def get_database_uri():
+    return (
+        f"postgresql+psycopg2://{os.environ['DB_USER']}:{os.environ['DB_PASS']}"
+        f"@{os.environ['DB_HOST']}/{os.environ['DB_NAME']}"
+    )
 
 
 class UserRole(enum.Enum):

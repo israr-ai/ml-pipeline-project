@@ -8,6 +8,8 @@ dill
 gunicorn
 joblib
 flask-sqlalchemy
+psycopg2-binary
 flask-login
 flask-wtf
 email-validator
+pydantic

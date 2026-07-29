@@ -1,22 +1,24 @@
 import os
 
-from flask import Flask, request,render_template
+from flask import Flask, request,render_template, jsonify
 import numpy as np
 import pandas as pd
 
 from sklearn.preprocessing import StandardScaler
 from flask_login import LoginManager, current_user, login_required
+from pydantic import ValidationError
 
+from src.exception import CustomException
 from src.pipeline.predict_pipeline import CustomData,PredictPipeline
-from src.models_db import db, User, Prediction
+from src.models_db import db, User, Prediction, get_database_uri
 from src.auth.routes import auth_bp
 from src.admin.routes import admin_bp
 from src.analytics.aggregations import build_dashboard_data
+from src.schemas import PredictRequest
 
 application = Flask(__name__)
 
-BASE_DIR = os.path.dirname(os.path.abspath(__file__))
-application.config["SQLALCHEMY_DATABASE_URI"] = "sqlite:///" + os.path.join(BASE_DIR, "artifacts", "app.db")
+application.config["SQLALCHEMY_DATABASE_URI"] = get_database_uri()
 application.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
 application.config["SECRET_KEY"] = os.environ.get("SECRET_KEY", "dev-secret-key")
 db.init_app(application)
@@ -101,7 +103,37 @@ def predict_datapoint():
             saved_to_history = True
 
         return render_template('home.html', results=predicted_score, saved_to_history=saved_to_history)
-    
+
+@app.route('/api/predict', methods=['POST'])
+def api_predict():
+    payload = request.get_json(silent=True)
+    if payload is None:
+        return jsonify({"error": "Request body must be valid JSON."}), 400
+
+    try:
+        validated = PredictRequest(**payload)
+    except ValidationError as exc:
+        return jsonify({"error": "Invalid input.", "details": exc.errors()}), 400
+
+    data = CustomData(
+        gender=validated.gender.value,
+        race_ethnicity=validated.race_ethnicity.value,
+        parent_education=validated.parent_education.value,
+        lunch=validated.lunch.value,
+        test_preparation_course=validated.test_preparation_course.value,
+        reading_score=validated.reading_score,
+        writing_score=validated.writing_score,
+    )
+    pred_df = data.get_data_as_data_frame()
+
+    try:
+        predict_pipeline = PredictPipeline()
+        results = predict_pipeline.predict(pred_df)
+    except CustomException:
+        return jsonify({"error": "Prediction failed."}), 500
+
+    return jsonify({"predicted_math_score": float(results[0])})
+
 if __name__=="__main__":
     app.run(host="0.0.0.0",port=5000,debug=True)
        
