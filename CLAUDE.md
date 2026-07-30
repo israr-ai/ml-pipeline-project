@@ -2,21 +2,23 @@
 
 ## Project state
 
-**v1.0 (current):** ML pipeline (data ingestion → transformation → training → prediction) behind a
-single Flask prediction form. Model is CatBoost/Scikit-learn, serialized as `artifacts/model.pkl` +
-`artifacts/preprocessor.pkl`. Dockerized, AWS deployment-ready (Elastic Beanstalk + ECR). No auth, no
-DB, no analytics — every prediction is a stateless one-off.
+**v1.0:** ML pipeline (data ingestion → transformation → training → prediction) behind a single Flask
+prediction form. Model is CatBoost/Scikit-learn, serialized as `artifacts/model.pkl` +
+`artifacts/preprocessor.pkl`. No auth, no DB, no analytics — every prediction was a stateless one-off.
 
-**v2.0 (in progress):** Turning this into a small ML-powered web product:
-1. User authentication (login/signup)
-2. Prediction history stored per user
-3. An analytics dashboard (charts), visible only after login
-4. Admin view (stretch) for aggregate stats across all users
+**v2.0 (current):** Full ML-powered web product, built on top of v1.0:
+1. User authentication (login/signup/forgot-password) — `src/auth/`
+2. Predictions persisted per user in the DB (SQLite locally, Postgres in prod) — `src/models_db.py`
+3. Prediction history page — `templates/history.html`
+4. Analytics dashboard (charts via `static/js/dashboard.js`), visible only after login —
+   `src/analytics/`, `templates/_analytics_dashboard.html`
+5. Admin dashboard for aggregate stats across all users — `src/admin/`
+6. JSON REST API for predictions (`/api/predict`) validated with Pydantic — `src/schemas.py`
+7. Dockerized, deployable to Render or AWS (Elastic Beanstalk + ECR)
 
 See `project-scop.md` in the repo root for the full scope doc (feature list, DB schema, build order).
 
-Build order: DB models → auth → wire prediction pipeline to DB → history page → analytics dashboard →
-UI polish → optional admin/API → CI/CD. Each step should leave the app in a runnable state.
+Remaining/possible next steps: CI/CD pipeline, model retraining pipeline, richer monitoring.
 
 ## Conventions
 
@@ -34,5 +36,3 @@ UI polish → optional admin/API → CI/CD. Each step should leave the app in a 
 - **Frontend styling**: Tailwind CSS (CDN, `<script src="https://cdn.tailwindcss.com">`), matching
   `templates/home.html` and `templates/index.html`. Don't introduce Bootstrap or another CSS framework
   — keep new templates (login, signup, dashboard, history) visually consistent with the existing ones.
-</content>
-</invoke>
