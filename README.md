@@ -3,7 +3,7 @@
 
 Application URL:
 
-https://your-app-domain.com
+https://student-performance-app-bj20.onrender.com
 
 ---
 
