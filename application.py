@@ -7,7 +7,6 @@ import pandas as pd
 from sklearn.preprocessing import StandardScaler
 from flask_login import LoginManager, current_user, login_required
 from pydantic import ValidationError
-from sqlalchemy import text
 
 from src.exception import CustomException
 from src.pipeline.predict_pipeline import CustomData,PredictPipeline
@@ -48,16 +47,6 @@ app= application
 
 def index():
     return render_template('index.html')
-
-@app.route("/db-test")
-def db_test():
-    try:
-        result = db.session.execute(text("SELECT current_database(), version();"))
-        return str(result.fetchone())
-    except Exception as e:
-        import traceback
-        traceback.print_exc()
-        return str(e), 500
 
 @app.route('/dashboard')
 @login_required
