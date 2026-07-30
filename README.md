@@ -45,9 +45,9 @@ https://github.com/israr-ai/ml-pipeline-project
 
 ## Project Overview
 
-This project is an end-to-end Machine Learning application that predicts a student's Mathematics score based on demographic and academic factors such as gender, race/ethnicity, parental education level, lunch type, test preparation course, reading score, and writing score.
+This project is an end-to-end Machine Learning web product that predicts a student's Mathematics score based on demographic and academic factors such as gender, race/ethnicity, parental education level, lunch type, test preparation course, reading score, and writing score.
 
-The project includes data preprocessing, model training, prediction pipeline creation, a Flask web application, Docker containerization, and cloud deployment readiness.
+The project includes data preprocessing, model training, prediction pipeline creation, a Flask web application with user accounts and an analytics dashboard, Docker containerization, and cloud deployment readiness.
 
 ---
 
@@ -55,11 +55,15 @@ The project includes data preprocessing, model training, prediction pipeline cre
 
 * Student score prediction using Machine Learning
 * Data preprocessing and feature engineering
-* Flask-based web application
-* User-friendly prediction form
-* Dockerized application
+* User authentication (signup, login, forgot/reset password)
+* Prediction history stored per user (SQLite locally, PostgreSQL in production)
+* Analytics dashboard with charts, visible after login
+* Admin dashboard with aggregate stats across all users
+* JSON REST API for predictions (`/api/predict`), validated with Pydantic
+* Flask-based web application with a user-friendly prediction form
+* Dockerized application (docker-compose for app + Postgres)
 * Production-ready project structure
-* AWS deployment support
+* AWS and Render deployment support
 
 ---
 
@@ -79,19 +83,33 @@ mlproject/
 │   └── project.ipynb
 │
 ├── src/
-│   ├── components/
-│   ├── pipeline/
+│   ├── components/          # data ingestion, transformation, model training
+│   ├── pipeline/             # train/predict pipelines
+│   ├── auth/                 # login, signup, password reset routes
+│   ├── admin/                 # admin dashboard routes
+│   ├── analytics/             # aggregation queries for the dashboard
+│   ├── models_db.py           # SQLAlchemy models (User, Prediction, ...)
+│   ├── schemas.py             # Pydantic schemas for the REST API
 │   ├── exception.py
 │   ├── logger.py
 │   └── utils.py
 │
 ├── templates/
 │   ├── index.html
-│   └── home.html
+│   ├── home.html
+│   ├── login.html / signup.html
+│   ├── forgot_password.html / reset_password.html
+│   ├── dashboard.html / _analytics_dashboard.html
+│   ├── history.html
+│   └── admin.html
 │
+├── static/js/dashboard.js     # analytics dashboard charts
+├── assets/                    # README screenshots
 ├── application.py
 ├── Dockerfile
+├── docker-compose.yml
 ├── requirements.txt
+├── requirements-train.txt
 ├── setup.py
 └── README.md
 ```
@@ -133,10 +151,17 @@ The model uses the following input features:
 ### Web Framework
 
 * Flask
+* Flask-SQLAlchemy, Flask-Login, Flask-WTF
+* Pydantic (REST API validation)
+
+### Database
+
+* SQLite (local development)
+* PostgreSQL (production)
 
 ### Containerization
 
-* Docker
+* Docker & Docker Compose
 
 ### Version Control
 
@@ -144,6 +169,7 @@ The model uses the following input features:
 
 ### Cloud Deployment
 
+* Render
 * AWS Elastic Beanstalk
 * AWS ECR
 * AWS CodePipeline
@@ -202,7 +228,7 @@ these heavier training-only packages.
 ## Run Application Locally
 
 ```bash
-python app.py
+python application.py
 ```
 
 Open:
@@ -246,9 +272,6 @@ Evaluation metrics and model comparison were performed during training to select
 ## Future Improvements
 
 * CI/CD Pipeline Integration
-* AWS Cloud Deployment
-* User Authentication
-* Prediction History Storage
 * Monitoring and Logging
 * Model Retraining Pipeline
 
