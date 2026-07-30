@@ -33,14 +33,14 @@ https://github.com/israr-ai/ml-pipeline-project
 
 ### Home Page
 
-![alt text](image-2.png)
+![alt text](assets/image-2.png)
 
 ### Prediction Page
 
-![alt text](image.png)
+![alt text](assets/image.png)
 
 ### Prediction Result
-![alt text](image-1.png)
+![alt text](assets/image-1.png)
 
 
 ## Project Overview
