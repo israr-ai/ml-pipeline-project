@@ -15,6 +15,7 @@ prediction form. Model is CatBoost/Scikit-learn, serialized as `artifacts/model.
 5. Admin dashboard for aggregate stats across all users — `src/admin/`
 6. JSON REST API for predictions (`/api/predict`) validated with Pydantic — `src/schemas.py`
 7. Dockerized, deployable to Render or AWS (Elastic Beanstalk + ECR)
+8. Pytest test suite (unit + route + e2e) under `tests/` — `pytest`
 
 See `project-scop.md` in the repo root for the full scope doc (feature list, DB schema, build order).
 
@@ -36,3 +37,10 @@ Remaining/possible next steps: CI/CD pipeline, model retraining pipeline, richer
 - **Frontend styling**: Tailwind CSS (CDN, `<script src="https://cdn.tailwindcss.com">`), matching
   `templates/home.html` and `templates/index.html`. Don't introduce Bootstrap or another CSS framework
   — keep new templates (login, signup, dashboard, history) visually consistent with the existing ones.
+- **Tests**: every new route/model/module should get pytest coverage in `tests/`, mirroring the
+  existing split — pure-logic unit tests (`test_schemas.py`, `test_analytics.py`), route tests via the
+  Flask test client (`test_auth.py`, `test_admin.py`, `test_api_predict.py`), and full-journey tests in
+  `test_e2e_flow.py`. Tests run against a temp on-disk SQLite DB (set up in `tests/conftest.py`) so they
+  never touch the real `DATABASE_URL`. Admin routes use manual `validate_csrf()` (not `FlaskForm`), so
+  it isn't bypassed by `WTF_CSRF_ENABLED=False` — tests that POST to them must fetch a real token first
+  (see `test_admin.py::test_admin_can_delete_other_user`).
