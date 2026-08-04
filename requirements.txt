@@ -11,3 +11,4 @@ flask-login
 flask-wtf
 email-validator
 pydantic
+python-dotenv

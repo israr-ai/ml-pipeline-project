@@ -1,42 +1,80 @@
 <div class="grid sm:grid-cols-3 gap-6">
-    <div class="bg-white dark:bg-gray-800 shadow-2xl rounded-2xl p-6 text-center border-t-4 border-[#2a78d6] dark:border-[#3987e5]">
-        <p class="text-sm text-gray-500 dark:text-gray-400">Total predictions</p>
-        <p class="text-4xl font-semibold text-[#2a78d6] dark:text-[#3987e5] mt-2">{{ dashboard_data.total_predictions }}</p>
+    <div class="bg-gradient-to-br from-blue-50/80 to-white dark:from-gray-800 dark:to-gray-800 shadow-lg hover:shadow-xl transition-shadow rounded-2xl p-6 border border-gray-100 dark:border-gray-700 border-t-4 border-t-[#2a78d6] dark:border-t-[#3987e5]">
+        <div class="flex items-center justify-between">
+            <p class="text-sm font-medium text-gray-500 dark:text-gray-400">Total predictions</p>
+            <span class="w-10 h-10 rounded-xl bg-blue-100 dark:bg-blue-900/30 flex items-center justify-center text-[#2a78d6] dark:text-[#3987e5]">
+                <svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M9 12h3.75M9 15h3.75M9 18h3.75m3-3.75h.008v.008h-.008v-.008zm0 3h.008v.008h-.008v-.008zM8.25 21h7.5a2.25 2.25 0 002.25-2.25V5.25A2.25 2.25 0 0015.75 3h-7.5A2.25 2.25 0 006 5.25v13.5A2.25 2.25 0 008.25 21z" />
+                </svg>
+            </span>
+        </div>
+        <p class="text-4xl font-bold text-gray-800 dark:text-white mt-4">{{ dashboard_data.total_predictions }}</p>
     </div>
-    <div class="bg-white dark:bg-gray-800 shadow-2xl rounded-2xl p-6 text-center border-t-4 border-[#eb6834] dark:border-[#d95926]">
-        <p class="text-sm text-gray-500 dark:text-gray-400">Average score</p>
-        <p class="text-4xl font-semibold text-[#eb6834] dark:text-[#d95926] mt-2">{{ dashboard_data.average_score }}</p>
+    <div class="bg-gradient-to-br from-orange-50/80 to-white dark:from-gray-800 dark:to-gray-800 shadow-lg hover:shadow-xl transition-shadow rounded-2xl p-6 border border-gray-100 dark:border-gray-700 border-t-4 border-t-[#eb6834] dark:border-t-[#d95926]">
+        <div class="flex items-center justify-between">
+            <p class="text-sm font-medium text-gray-500 dark:text-gray-400">Average score</p>
+            <span class="w-10 h-10 rounded-xl bg-orange-100 dark:bg-orange-900/30 flex items-center justify-center text-[#eb6834] dark:text-[#d95926]">
+                <svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M2.25 18L9 11.25l4.306 4.306a11.95 11.95 0 015.814-5.518l2.74-1.22m0 0l-5.94-2.28m5.94 2.28l-2.28 5.941" />
+                </svg>
+            </span>
+        </div>
+        <p class="text-4xl font-bold text-gray-800 dark:text-white mt-4">{{ dashboard_data.average_score }}</p>
     </div>
-    <div class="bg-white dark:bg-gray-800 shadow-2xl rounded-2xl p-6 text-center border-t-4 border-[#1baf7a] dark:border-[#199e70]">
-        <p class="text-sm text-gray-500 dark:text-gray-400">Highest score</p>
-        <p class="text-4xl font-semibold text-[#128f63] dark:text-[#199e70] mt-2">{{ dashboard_data.highest_score }}</p>
+    <div class="bg-gradient-to-br from-emerald-50/80 to-white dark:from-gray-800 dark:to-gray-800 shadow-lg hover:shadow-xl transition-shadow rounded-2xl p-6 border border-gray-100 dark:border-gray-700 border-t-4 border-t-[#1baf7a] dark:border-t-[#199e70]">
+        <div class="flex items-center justify-between">
+            <p class="text-sm font-medium text-gray-500 dark:text-gray-400">Highest score</p>
+            <span class="w-10 h-10 rounded-xl bg-emerald-100 dark:bg-emerald-900/30 flex items-center justify-center text-[#128f63] dark:text-[#199e70]">
+                <svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M16.5 18.75h-9m9 0a3 3 0 013 3h-15a3 3 0 013-3m9 0v-3.375c0-.621-.503-1.125-1.125-1.125h-.871M7.5 18.75v-3.375c0-.621.504-1.125 1.125-1.125h.872m5.007 0H9.497m5.007 0a7.454 7.454 0 01-.982-3.172M9.497 14.25a7.454 7.454 0 00.981-3.172M5.25 4.236c-.982.143-1.954.317-2.916.52A6.003 6.003 0 007.73 9.728M5.25 4.236V4.5c0 2.108.966 3.99 2.48 5.228M5.25 4.236V2.721C7.456 2.41 9.71 2.25 12 2.25c2.291 0 4.545.16 6.75.47v1.516M7.73 9.728a6.726 6.726 0 002.748 1.35m8.272-6.842V4.5c0 2.108-.966 3.99-2.48 5.228m2.48-5.492a46.32 46.32 0 012.916.52 6.003 6.003 0 01-5.395 4.972m0 0a6.726 6.726 0 01-2.749 1.35m0 0a6.772 6.772 0 01-3.044 0" />
+                </svg>
+            </span>
+        </div>
+        <p class="text-4xl font-bold text-gray-800 dark:text-white mt-4">{{ dashboard_data.highest_score }}</p>
     </div>
 </div>
 
 {% if dashboard_data.total_predictions > 0 %}
     <div class="grid md:grid-cols-2 gap-6">
-        <div class="bg-white dark:bg-gray-800 shadow-2xl rounded-2xl p-6">
-            <h2 class="text-base font-semibold text-gray-700 dark:text-gray-200 mb-4">Average predicted score by gender</h2>
+        <div class="bg-white dark:bg-gray-800 shadow-lg hover:shadow-xl transition-shadow rounded-2xl p-6 border border-gray-100 dark:border-gray-700">
+            <h2 class="flex items-center gap-2 text-base font-semibold text-gray-700 dark:text-gray-200 mb-4">
+                <span class="w-2 h-2 rounded-full bg-[#2a78d6] dark:bg-[#3987e5]"></span>
+                Average predicted score by gender
+            </h2>
             <canvas id="genderChart"></canvas>
         </div>
-        <div class="bg-white dark:bg-gray-800 shadow-2xl rounded-2xl p-6">
-            <h2 class="text-base font-semibold text-gray-700 dark:text-gray-200 mb-4">Average predicted score by parental education</h2>
+        <div class="bg-white dark:bg-gray-800 shadow-lg hover:shadow-xl transition-shadow rounded-2xl p-6 border border-gray-100 dark:border-gray-700">
+            <h2 class="flex items-center gap-2 text-base font-semibold text-gray-700 dark:text-gray-200 mb-4">
+                <span class="w-2 h-2 rounded-full bg-[#2a78d6] dark:bg-[#3987e5]"></span>
+                Average predicted score by parental education
+            </h2>
             <canvas id="parentalEducationChart"></canvas>
         </div>
-        <div class="bg-white dark:bg-gray-800 shadow-2xl rounded-2xl p-6">
-            <h2 class="text-base font-semibold text-gray-700 dark:text-gray-200 mb-4">Predictions by lunch type</h2>
+        <div class="bg-white dark:bg-gray-800 shadow-lg hover:shadow-xl transition-shadow rounded-2xl p-6 border border-gray-100 dark:border-gray-700">
+            <h2 class="flex items-center gap-2 text-base font-semibold text-gray-700 dark:text-gray-200 mb-4">
+                <span class="w-2 h-2 rounded-full bg-[#eb6834] dark:bg-[#d95926]"></span>
+                Predictions by lunch type
+            </h2>
             <canvas id="lunchChart"></canvas>
         </div>
-        <div class="bg-white dark:bg-gray-800 shadow-2xl rounded-2xl p-6">
-            <h2 class="text-base font-semibold text-gray-700 dark:text-gray-200 mb-4">Average predicted score by test preparation</h2>
+        <div class="bg-white dark:bg-gray-800 shadow-lg hover:shadow-xl transition-shadow rounded-2xl p-6 border border-gray-100 dark:border-gray-700">
+            <h2 class="flex items-center gap-2 text-base font-semibold text-gray-700 dark:text-gray-200 mb-4">
+                <span class="w-2 h-2 rounded-full bg-[#2a78d6] dark:bg-[#3987e5]"></span>
+                Average predicted score by test preparation
+            </h2>
             <canvas id="testPrepChart"></canvas>
         </div>
     </div>
 {% else %}
-    <div class="bg-white dark:bg-gray-800 shadow-2xl rounded-2xl p-8 text-center">
+    <div class="bg-white dark:bg-gray-800 shadow-lg rounded-2xl p-10 text-center border-2 border-dashed border-gray-200 dark:border-gray-700">
+        <div class="mx-auto w-16 h-16 rounded-full bg-blue-100 dark:bg-blue-900/30 flex items-center justify-center text-[#2a78d6] dark:text-[#3987e5] mb-4">
+            <svg class="w-8 h-8" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M3 13.125C3 12.504 3.504 12 4.125 12h2.25c.621 0 1.125.504 1.125 1.125v6.75C7.5 20.496 6.996 21 6.375 21h-2.25A1.125 1.125 0 013 19.875v-6.75zM9.75 8.625c0-.621.504-1.125 1.125-1.125h2.25c.621 0 1.125.504 1.125 1.125v11.25c0 .621-.504 1.125-1.125 1.125h-2.25a1.125 1.125 0 01-1.125-1.125V8.625zM16.5 4.125c0-.621.504-1.125 1.125-1.125h2.25C20.496 3 21 3.504 21 4.125v15.75c0 .621-.504 1.125-1.125 1.125h-2.25a1.125 1.125 0 01-1.125-1.125V4.125z" />
+            </svg>
+        </div>
         <p class="text-gray-500 dark:text-gray-400">{{ empty_message | default("No predictions yet.") }}</p>
         {% if empty_cta_url %}
-            <a href="{{ empty_cta_url }}" class="text-indigo-600 dark:text-indigo-400 hover:underline mt-2 inline-block">{{ empty_cta_label | default("Make a prediction") }}</a>
+            <a href="{{ empty_cta_url }}" class="mt-4 inline-block bg-blue-600 hover:bg-blue-700 text-white px-5 py-2.5 rounded-lg font-medium transition">{{ empty_cta_label | default("Make a prediction") }}</a>
         {% endif %}
     </div>
 {% endif %}

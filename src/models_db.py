@@ -17,6 +17,15 @@ def get_database_uri():
             database_url = database_url.replace("postgresql://", "postgresql+psycopg2://", 1)
         return database_url
 
+    required = ["DB_USER", "DB_PASS", "DB_HOST", "DB_NAME"]
+    missing = [name for name in required if not os.environ.get(name)]
+    if missing:
+        raise RuntimeError(
+            "Database is not configured: set DATABASE_URL, or all of "
+            f"{', '.join(required)}. Missing: {', '.join(missing)}. "
+            "See .env.example."
+        )
+
     return (
         f"postgresql+psycopg2://{os.environ['DB_USER']}:{os.environ['DB_PASS']}"
         f"@{os.environ['DB_HOST']}/{os.environ['DB_NAME']}"

@@ -1,5 +1,6 @@
 import os
 
+from dotenv import load_dotenv
 from flask import Flask, request,render_template, jsonify
 import numpy as np
 import pandas as pd
@@ -15,6 +16,8 @@ from src.auth.routes import auth_bp
 from src.admin.routes import admin_bp
 from src.analytics.aggregations import build_dashboard_data
 from src.schemas import PredictRequest
+
+load_dotenv()
 
 application = Flask(__name__)
 

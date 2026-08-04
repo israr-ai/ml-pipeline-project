@@ -20,12 +20,13 @@
     </script>
     {% block head %}{% endblock %}
 </head>
-<body class="bg-gray-50 dark:bg-gray-900 min-h-screen">
+<body class="bg-gradient-to-br from-slate-50 via-blue-50 to-indigo-50 dark:from-gray-900 dark:via-gray-900 dark:to-gray-900 min-h-screen">
 
-    <nav class="fixed top-0 inset-x-0 h-14 z-20 bg-white dark:bg-gray-800 border-b border-gray-200 dark:border-gray-700">
+    <nav class="fixed top-0 inset-x-0 h-14 z-20 bg-white/90 dark:bg-gray-800 backdrop-blur-sm dark:border-b dark:border-gray-700 shadow-sm dark:shadow-none">
+        <div class="absolute bottom-0 inset-x-0 h-[3px] bg-gradient-to-r from-blue-500 via-indigo-500 to-purple-500 dark:hidden"></div>
         <div class="h-full flex items-center justify-between px-4">
             <a href="{{ url_for('index') }}" class="flex items-center gap-2 font-semibold text-gray-800 dark:text-white">
-                <span class="text-xl">🎓</span>
+                <span class="w-8 h-8 rounded-lg bg-gradient-to-br from-blue-600 to-indigo-600 flex items-center justify-center text-base shadow-sm">🎓</span>
                 <span class="hidden sm:inline">Student Performance Predictor</span>
             </a>
             <div class="flex items-center gap-4 text-sm font-medium text-gray-600 dark:text-gray-300">
@@ -33,7 +34,7 @@
                     <span class="hidden sm:inline">Hi, {{ current_user.name }}</span>
                 {% endif %}
                 <button id="theme-toggle" type="button"
-                    class="w-9 h-9 flex items-center justify-center text-gray-600 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700"
+                    class="w-9 h-9 flex items-center justify-center rounded-lg text-gray-600 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700"
                     aria-label="Toggle dark mode">
                     <span id="theme-toggle-icon"></span>
                 </button>
@@ -41,21 +42,36 @@
                     <a href="{{ url_for('auth.logout') }}" class="hover:text-blue-600 dark:hover:text-gray-300 hover:underline">Logout</a>
                 {% else %}
                     <a href="{{ url_for('auth.login') }}" class="hover:text-blue-600 dark:hover:text-gray-300 hover:underline">Login</a>
-                    <a href="{{ url_for('auth.signup') }}" class="hover:text-blue-600 dark:hover:text-gray-300 hover:underline">Signup</a>
+                    <a href="{{ url_for('auth.signup') }}" class="inline-block bg-blue-600 hover:bg-blue-700 text-white px-3 py-1.5 rounded-lg transition">Signup</a>
                 {% endif %}
             </div>
         </div>
     </nav>
 
-    <aside class="hidden md:block fixed top-14 bottom-0 left-0 w-56 bg-white dark:bg-gray-800 border-r border-gray-200 dark:border-gray-700 overflow-y-auto">
-        <div class="p-4 space-y-1 text-sm font-medium text-gray-600 dark:text-gray-300">
-            <a href="{{ url_for('index') }}" class="block px-3 py-2 rounded-lg hover:bg-gray-100 hover:text-blue-600 dark:hover:bg-gray-700 dark:hover:text-gray-300">Home</a>
-            <a href="{{ url_for('predict_datapoint') }}" class="block px-3 py-2 rounded-lg hover:bg-gray-100 hover:text-blue-600 dark:hover:bg-gray-700 dark:hover:text-gray-300">Predict</a>
-            <a href="{{ url_for('history') }}" class="block px-3 py-2 rounded-lg hover:bg-gray-100 hover:text-blue-600 dark:hover:bg-gray-700 dark:hover:text-gray-300">History</a>
-            <a href="{{ url_for('dashboard') }}" class="block px-3 py-2 rounded-lg hover:bg-gray-100 hover:text-blue-600 dark:hover:bg-gray-700 dark:hover:text-gray-300">Dashboard</a>
+    <aside class="hidden md:block fixed top-14 bottom-0 left-0 w-56 bg-white/80 dark:bg-gray-800 backdrop-blur-sm border-r border-gray-200/70 dark:border-gray-700 overflow-y-auto">
+        <div class="p-4 space-y-1 text-sm font-medium">
+            {% macro nav_link(endpoint, label, icon_path, url=None) %}
+                {% set target = url or url_for(endpoint) %}
+                {% set is_active = request.path == target %}
+                <a href="{{ target }}"
+                   class="flex items-center gap-3 px-3 py-2 rounded-lg border-l-4 transition
+                          {{ 'bg-blue-50 border-blue-600 text-blue-700 dark:bg-gray-700 dark:border-blue-400 dark:text-white'
+                             if is_active else
+                             'border-transparent text-gray-600 dark:text-gray-300 hover:bg-gray-100 hover:text-blue-600 dark:hover:bg-gray-700 dark:hover:text-gray-300' }}">
+                    <svg class="w-5 h-5 shrink-0" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="{{ icon_path }}" />
+                    </svg>
+                    <span>{{ label }}</span>
+                </a>
+            {% endmacro %}
+
+            {{ nav_link('index', 'Home', 'M2.25 12l8.954-8.955c.44-.439 1.152-.439 1.591 0L21.75 12M4.5 9.75v10.125c0 .621.504 1.125 1.125 1.125H9.75v-4.875c0-.621.504-1.125 1.125-1.125h2.25c.621 0 1.125.504 1.125 1.125V21h4.125c.621 0 1.125-.504 1.125-1.125V9.75M8.25 21h8.25') }}
+            {{ nav_link('predict_datapoint', 'Predict', 'M9 17.25v1.007a3 3 0 01-.879 2.122L7.5 21h9l-.621-.621A3 3 0 0115 18.257V17.25m6-12V15a2.25 2.25 0 01-2.25 2.25H5.25A2.25 2.25 0 013 15V5.25m18 0A2.25 2.25 0 0018.75 3H5.25A2.25 2.25 0 003 5.25m18 0V12a2.25 2.25 0 01-2.25 2.25H5.25A2.25 2.25 0 013 12V5.25') }}
+            {{ nav_link('history', 'History', 'M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z') }}
+            {{ nav_link('dashboard', 'Dashboard', 'M3 13.125C3 12.504 3.504 12 4.125 12h2.25c.621 0 1.125.504 1.125 1.125v6.75C7.5 20.496 6.996 21 6.375 21h-2.25A1.125 1.125 0 013 19.875v-6.75zM9.75 8.625c0-.621.504-1.125 1.125-1.125h2.25c.621 0 1.125.504 1.125 1.125v11.25c0 .621-.504 1.125-1.125 1.125h-2.25a1.125 1.125 0 01-1.125-1.125V8.625zM16.5 4.125c0-.621.504-1.125 1.125-1.125h2.25C20.496 3 21 3.504 21 4.125v15.75c0 .621-.504 1.125-1.125 1.125h-2.25a1.125 1.125 0 01-1.125-1.125V4.125z') }}
             {% if current_user.is_authenticated and current_user.role.value == 'admin' %}
-                <a href="{{ url_for('admin.dashboard') }}" class="block px-3 py-2 rounded-lg hover:bg-gray-100 hover:text-blue-600 dark:hover:bg-gray-700 dark:hover:text-gray-300">Admin</a>
-                <a href="{{ url_for('admin.dashboard') }}#registered-users" class="block px-3 py-2 rounded-lg hover:bg-gray-100 hover:text-blue-600 dark:hover:bg-gray-700 dark:hover:text-gray-300">Registered Users</a>
+                {{ nav_link('admin.dashboard', 'Admin', 'M9 12.75L11.25 15 15 9.75m-3-7.036A11.959 11.959 0 013.598 6 11.99 11.99 0 003 9.749c0 5.592 3.824 10.29 9 11.623 5.176-1.332 9-6.03 9-11.622 0-1.31-.21-2.571-.598-3.751h-.152c-3.196 0-6.1-1.248-8.25-3.285z') }}
+                {{ nav_link('admin.dashboard', 'Registered Users', 'M15 19.128a9.38 9.38 0 002.625.372 9.337 9.337 0 004.121-.952 4.125 4.125 0 00-7.533-2.493M15 19.128v-.003c0-1.113-.285-2.16-.786-3.07M15 19.128v.106A12.318 12.318 0 018.624 21c-2.331 0-4.512-.645-6.374-1.766l-.001-.109a6.375 6.375 0 0111.964-3.07M12 6.375a3.375 3.375 0 11-6.75 0 3.375 3.375 0 016.75 0zm8.25 2.25a2.625 2.625 0 11-5.25 0 2.625 2.625 0 015.25 0z', url_for('admin.dashboard') ~ '#registered-users') }}
             {% endif %}
         </div>
     </aside>
