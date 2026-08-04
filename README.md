@@ -3,7 +3,7 @@
 
 Application URL:
 
-https://your-app-domain.com
+https://student-performance-app-bj20.onrender.com
 
 ---
 
@@ -236,6 +236,35 @@ Open:
 ```text
 http://localhost:5000
 ```
+
+---
+
+## Running Tests
+
+Install the test-only dependencies (pytest, on top of the serving requirements):
+
+```bash
+pip install -r requirements.txt -r requirements-dev.txt
+```
+
+Run the suite:
+
+```bash
+pytest
+```
+
+The suite lives under `tests/` and covers:
+
+* `test_schemas.py` — Pydantic validation for the `/api/predict` request schema
+* `test_analytics.py` — dashboard aggregation logic
+* `test_predict_pipeline.py` — the prediction pipeline against the real trained model artifacts
+* `test_auth.py` — signup, login, logout, and access control on protected routes
+* `test_admin.py` — admin-only access and user deletion (including CSRF)
+* `test_api_predict.py` — the JSON `/api/predict` endpoint
+* `test_e2e_flow.py` — a full user journey (signup → predict → history → dashboard → logout)
+
+Tests run against a temporary on-disk SQLite database (created fresh per run), so they never touch
+your local `.env` / `DATABASE_URL` or the production database.
 
 ---
 

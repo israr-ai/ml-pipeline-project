@@ -26,6 +26,9 @@ application.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
 application.config["SECRET_KEY"] = os.environ.get("SECRET_KEY", "dev-secret-key")
 db.init_app(application)
 
+with application.app_context():
+    db.create_all()
+
 login_manager = LoginManager()
 login_manager.login_view = "auth.login"
 login_manager.init_app(application)

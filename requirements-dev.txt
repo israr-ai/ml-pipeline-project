@@ -1,0 +1,4 @@
+# Test-only dependencies. Install alongside the serving requirements:
+#   pip install -r requirements.txt -r requirements-dev.txt
+-r requirements.txt
+pytest
